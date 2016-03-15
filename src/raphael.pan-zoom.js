@@ -91,7 +91,8 @@
                 initialPos = { x: 0, y: 0 },
                 deltaX = 0,
                 deltaY = 0,
-                mousewheelevt = (/Firefox/i.test(navigator.userAgent)) ? "DOMMouseScroll" : "mousewheel";
+                mousewheelevt = (/Firefox/i.test(navigator.userAgent)) ? "DOMMouseScroll MozMousePixelScrollZ" : "mousewheel";
+
 
             this.enabled = false;
             this.dragThreshold = 5;
@@ -227,7 +228,9 @@
             if (container.attachEvent) {//if IE (and Opera depending on user setting)
                 container.attachEvent("on" + mousewheelevt, handleScroll);
             } else if (container.addEventListener) {//WC3 browsers
-                container.addEventListener(mousewheelevt, handleScroll, false);
+                (mousewheelevt.split(" ")).forEach(function(e){
+                    container.addEventListener(e, handleScroll, false);
+                });
             }
             var distance = 0;
             var isClick = 0;
